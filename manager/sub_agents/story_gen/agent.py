@@ -1,5 +1,11 @@
 from google.adk.agents import LlmAgent, SequentialAgent
+from pydantic import BaseModel, Field
 
+class StoryDraftOutput(BaseModel):
+    story_draft: str = Field(description="The generated story draft")
+    extracted_topic: str = Field(description="The topic identified from the request")
+    extracted_language: str = Field(description="The target language for the story")
+    
 # --- Sub-Agent 1: Story Draft Generator ---
 # This agent will now directly consume the 'request' parameter from the orchestrator.
 story_draft_generator = LlmAgent(
@@ -16,13 +22,9 @@ story_draft_generator = LlmAgent(
     3.  **Generate a story draft** based on the identified topic and language.
     Focus purely on conveying the core concept in a narrative form, ignoring specific word counts or hyper-localization details for now.
     
-    Output in a structured JSON format with three keys:
-    {{
-      "story_draft": "YOUR_GENERATED_STORY_TEXT",
-      "extracted_topic": "IDENTIFIED_TOPIC",
-      "extracted_language": "IDENTIFIED_LANGUAGE"
-    }}
+    Output only in JSON.
     """,
+    output_schema=StoryDraftOutput,
     # The output of this agent will be stored as JSON in 'story_details' in the shared state.
     output_key="story_details",
     include_contents="default",
