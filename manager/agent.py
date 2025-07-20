@@ -1,13 +1,28 @@
 from google.adk.agents import Agent
 from google.adk.tools.agent_tool import AgentTool
 
-from .sub_agents.story_gen.agent import story_gen
+from .sub_agents.story_gen.agent import story_generation_pipeline
 from .sub_agents.knowledge_base.agent import knowledge_base_agent
 from google.adk.tools.tool_context import ToolContext
 from google.genai.types import Content, Part
 import logging
 from .sub_agents.worksheet_generator.agent import WorksheetCreationSequence
 from .sub_agents.lesson_planner.agent import lesson_planner_agent
+
+# Story Generation Tool
+story_generator_tool = AgentTool(
+    agent=story_generation_pipeline,
+)
+
+# Knowledge Base Tool
+knowledge_base_tool = AgentTool(
+    agent=knowledge_base_agent,
+)
+
+# Lesson Planner Tool
+lesson_planner_tool = AgentTool(
+    agent=lesson_planner_agent,
+)
 
 worksheet_sequence = WorksheetCreationSequence()
 
@@ -45,25 +60,40 @@ async def save_uploaded_image_hook(
 
 root_agent = Agent(
     name="manager_agent",
-    model="gemini-1.5-flash",
-    description="Routes teacher requests to appropriate agents/tools.",
+    model="gemini-1.5-flash", # Flash is good for routing due to speed
+    description="The central orchestration agent for ShikshaMitrah. Routes teacher requests to appropriate specialized agents.",
     instruction="""
-You are a teaching assistant for rural school teachers.
-You can call the following agents:
+    You are ShikshaMitrah, an AI teaching assistant for rural primary school teachers in India.
+    Your primary role is to understand the teacher's request and efficiently delegate it to the most suitable specialized tool.
+    
+    You can use the following tools:
+    
+    - **story_generator_tool**: Use this tool when the teacher wants to create a story (e.g., "Create a story about...", "Tell me a story about...").
+      *   **Parameters**: `request` — the full teacher prompt.
+    
+    - **knowledge_base_tool**: Use this tool when the teacher or a student asks a "why" question or needs a simple explanation of a science concept (e.g., "Why is the sky blue?", "Explain photosynthesis simply.").
+      *   **Parameters**: `question` (the question to answer), `language` (the desired language for the explanation).
+      
+    - **lesson_planner_tool**: Use this tool when the teacher asks for a weekly lesson plan (e.g., "Plan a lesson for next week on math for grade 3.", "Help me prepare a weekly schedule.").
+      *   **Parameters**: `topic` (the subject of the lesson), `grade` (the target grade level), `duration` (e.g., "weekly", "daily"), `language` (the desired language for the plan).
 
-- story_gen → to generate local-language stories about concepts.
-- knowledge_base → to answer science questions with analogies.
-- lesson_planner → to create weekly lesson plans for multiple grades.
+    - **worksheet_creator_tool**: Use this tool when the teacher provides an image of a textbook page and asks to create worksheets from it, especially if differentiated for different grades (e.g., "Generate worksheets from this picture for grades 3 and 5.", "Make questions from this page.").
+      *   **Parameters**: `grades` (a list of target grade levels, e.g., `[3, 5]`), `language` (the desired language for the worksheet content), `topic` (optional: the topic of the textbook page if known).
+      *   **Note**: The image content from the teacher's input is automatically made available to this tool via a pre-execution hook.
 
-If the request is about explaining a science concept or answering a student’s "why" question, use knowledge_base.
-If the request involves creating a story, use story_gen.
-""",
-    sub_agents=[
-        story_gen,
-        knowledge_base_agent,
-        lesson_planner_agent
+    **Instructions for Tool Use:**
+    *   Carefully analyze the teacher's request.
+    *   Choose the single best tool for the request.
+    *   Extract all necessary parameters from the request to pass to the chosen tool.
+    *   Always respond in the teacher's requested language.
+    *   If the teacher provides an image and asks for worksheets, always use `worksheet_creator_tool`.
+    *   If the request is unclear or missing information, ask clarifying questions.
+    """,
+
+    tools=[
+        story_generator_tool,
+        knowledge_base_tool,
+        lesson_planner_tool,
+        worksheet_creator_tool
     ],
-    tools=[worksheet_creator_tool],
-    process_attachments=True,
-    pre_execution_hook=save_uploaded_image_hook
 )
