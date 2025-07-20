@@ -7,6 +7,7 @@ from google.adk.tools.tool_context import ToolContext
 from google.genai.types import Content, Part
 import logging
 from .sub_agents.worksheet_generator.agent import WorksheetCreationSequence
+from .sub_agents.lesson_planner.agent import lesson_planner_agent
 
 worksheet_sequence = WorksheetCreationSequence()
 
@@ -52,6 +53,7 @@ You can call the following agents:
 
 - story_gen → to generate local-language stories about concepts.
 - knowledge_base → to answer science questions with analogies.
+- lesson_planner → to create weekly lesson plans for multiple grades.
 
 If the request is about explaining a science concept or answering a student’s "why" question, use knowledge_base.
 If the request involves creating a story, use story_gen.
@@ -59,6 +61,7 @@ If the request involves creating a story, use story_gen.
     sub_agents=[
         story_gen,
         knowledge_base_agent,
+        lesson_planner_agent
     ],
     tools=[worksheet_creator_tool],
     process_attachments=True,
