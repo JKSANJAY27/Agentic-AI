@@ -2,7 +2,7 @@ from google.adk.agents import Agent
 from google.adk.tools.agent_tool import AgentTool
 
 from .sub_agents.story_gen.agent import story_generation_pipeline
-from .sub_agents.knowledge_base.agent import knowledge_base_agent
+from .sub_agents.knowledge_base.agent import knowledge_base_pipeline
 from google.adk.tools.tool_context import ToolContext
 from google.genai.types import Content, Part
 import logging
@@ -16,7 +16,7 @@ story_generator_tool = AgentTool(
 
 # Knowledge Base Tool
 knowledge_base_tool = AgentTool(
-    agent=knowledge_base_agent,
+    agent=knowledge_base_pipeline,
 )
 
 # Lesson Planner Tool
@@ -71,11 +71,11 @@ root_agent = Agent(
       *   **Parameters**:
           *   `request` (string, required): The teacher's full request for the story, including topic and desired language (e.g., "Write a story in Marathi about ants and fireflies."). This tool will parse the topic and language internally.
     
-    - **{knowledge_base_agent.name}**: Use this tool when the teacher or a student asks a "why" question or needs a simple explanation of a science concept.
-      *   **Description**: Provides simple, accurate explanations for complex student questions with easy-to-understand analogies.
+     - **{knowledge_base_pipeline.name}**: Use this tool when the teacher or a student asks a "why" question or needs a simple explanation of a science concept.
+      *   **Description**: Provides simple, accurate explanations for complex student questions with easy-to-understand, culturally-relevant analogies.
       *   **Parameters**:
           *   `question` (string, required): The complex student question to answer (e.g., "Why is the sky blue?").
-          *   `language` (string, optional): The desired language for the explanation (e.g., "Marathi", "Hindi", "English"). Default to "English" if not specified by the user.
+          *   `language` (string, optional): The desired language for the explanation (e.g., "Marathi", "Hindi", "English"). Default to whatever language has been given as input, if not specified by the user.
       
     - **{lesson_planner_agent.name}**: Use this tool when the teacher asks for a weekly lesson plan.
       *   **Description**: Creates weekly lesson plans for specific topics and grade levels.
