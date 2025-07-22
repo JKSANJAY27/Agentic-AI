@@ -74,8 +74,7 @@ root_agent = Agent(
      - **{knowledge_base_pipeline.name}**: Use this tool when the teacher or a student asks a "why" question or needs a simple explanation of a science concept.
       *   **Description**: Provides simple, accurate explanations for complex student questions with easy-to-understand, culturally-relevant analogies.
       *   **Parameters**:
-          *   `question` (string, required): The complex student question to answer (e.g., "Why is the sky blue?").
-          *   `language` (string, optional): The desired language for the explanation (e.g., "Marathi", "Hindi", "English"). Default to whatever language has been given as input, if not specified by the user.
+          *   `request` (string, required): The teacher's full question (e.g., "Why do we see rainbows?", "Explain photosynthesis in Hindi."). This tool will parse the question and language internally.
       
     - **{lesson_planner_agent.name}**: Use this tool when the teacher asks for a weekly lesson plan.
       *   **Description**: Creates weekly lesson plans for specific topics and grade levels.
@@ -101,6 +100,7 @@ root_agent = Agent(
     *   If the teacher provides an image (even implicitly via context) and asks for worksheets, always use **{worksheet_sequence.name}**.
     *   **AFTER calling a tool, if it successfully returns content, IMMEDIATELY present that content to the user as your response.** Do not add extra commentary unless absolutely necessary for clarity.
     *   Specifically, if you call **{story_generation_pipeline.name}**, the tool's final output will be in `session.state.final_formatted_response`. After the tool call, present that value to the user.
+    *   If you called **{knowledge_base_pipeline.name}**, present `session.state.final_knowledge_response`.
     """,
 
     tools=[
