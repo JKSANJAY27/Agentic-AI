@@ -46,7 +46,41 @@ search_query_generator_agent = LlmAgent(
     tools=[google_search], # <--- This agent now calls the tool!
 )
 
-
+# --- NEW Sub-Agent (Callback for Inappropriate Content) ---
+# This agent will check the generated search query for inappropriate words.
+# If found, it will trigger a callback.
+inappropriate_query_checker_agent = LlmAgent(
+    name="InappropriateQueryCheckerAgent",
+    model="gemini-1.5-flash", # Flash for quick checking
+    description="Checks the generated search query for inappropriate content and triggers a callback if found.",
+    instruction="""
+    You are a safety filter for search queries.
+    
+    *Search Query:* '{search_query_string_for_tool}'
+    
+    Your task is to analyze the 'Search Query' and determine if it contains any words or phrases that are inappropriate or unsuitable for primary school children.
+    
+    *List of potentially inappropriate words:*
+    - explicit profanity (e.g., f***, s***, b****, a******, c***, d***)
+    - derogatory terms (e.g., slurs, insults targeting groups or individuals)
+    - sexually suggestive terms (e.g., sex, naked, porn, intercourse, adult content, explicit, intimate parts)
+    - violence (e.g., kill, murder, harm, torture, assault, weapons, explosion)
+    - drug-related terms (e.g., drugs, cocaine, heroin, marijuana, weed, addict, high, pills)
+    - hate speech (e.g., racist, sexist, homophobic, xenophobic terms)
+    - self-harm related terms
+    - any terms that could be used for bullying or harassment.
+    - variations, misspellings, and euphemisms of the above.
+   
+    
+    If the 'Search Query' contains any inappropriate words, output 'INAPPROPRIATE_QUERY'.
+    Otherwise, output 'SAFE_QUERY'.
+    """,
+    output_key="query_safety_status",
+    # This is where you'd typically integrate a custom callback mechanism
+    # For demonstration, we'll use a simple instruction to signal 'inappropriate'
+    # In a real ADK application, you'd use ADK's callback features or custom logic
+    # within the agent to halt execution or notify a human.
+)
 # --- Sub-Agent 3: Answer Extraction & Simplification Agent ---
 answer_simplifier_agent = LlmAgent(
     name="AnswerSimplifierAgent",
@@ -109,6 +143,7 @@ knowledge_base_pipeline = SequentialAgent(
     sub_agents=[
         request_parser_agent,         # First: parse the request
         search_query_generator_agent, # Second: generate query and call search tool
+        inappropriate_query_checker_agent, # Checks for inappropriate content
         answer_simplifier_agent,      # Third: simplify the search results
         cultural_analogy_agent,       # Fourth: add cultural analogies
     ],
