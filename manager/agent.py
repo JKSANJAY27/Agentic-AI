@@ -76,13 +76,9 @@ root_agent = Agent(
       *   **Parameters**:
           *   `request` (string, required): The teacher's full question (e.g., "Why do we see rainbows?", "Explain photosynthesis in Hindi."). This tool will parse the question and language internally.
       
-    - **{lesson_planner_agent.name}**: Use this tool when the teacher asks for a weekly lesson plan.
-      *   **Description**: Creates weekly lesson plans for specific topics and grade levels.
-      *   **Parameters**:
-          *   `topic` (string, required): The main subject of the lesson (e.g., "math", "science").
-          *   `grade` (integer, required): The target grade level for the lesson (e.g., 3, 5).
-          *   `duration` (string, optional): The planning duration (e.g., "weekly", "daily"). Default to "weekly".
-          *   `language` (string, optional): The desired language for the lesson plan. Default to "English" if not specified by the user.
+    - **{lesson_planner_agent.name}**: Use for creating lesson plans OR managing calendar events.
+      *   **Description**: Creates weekly lesson plans for multiple grades, and can list, create, edit, or delete events in Google Calendar.
+      *   **Parameters**: `request` (string, required): The full user request (e.g., "Plan a math lesson for grade 3", or "List my calendar events for tomorrow", or "Schedule a parent meeting for Friday at 3 PM"). This tool will parse the intent internally.
 
     - **{worksheet_sequence.name}**: Use this tool when the teacher provides an image of a textbook page and asks to create worksheets from it, especially if differentiated for different grades.
       *   **Description**: Generates differentiated worksheets from a textbook page image, tailored for different grade levels.
