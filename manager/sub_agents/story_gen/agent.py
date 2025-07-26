@@ -70,7 +70,7 @@ class StoryDraftOutput(BaseModel):
 # This agent will now directly consume the 'request' parameter from the orchestrator.
 story_draft_generator = LlmAgent(
     name="StoryDraftGenerator",
-    model="gemini-1.5-flash", # Use a faster model for the initial draft
+    model="gemini-2.0-flash", # Use a faster model for the initial draft
     description="Generates a preliminary story draft and extracts key parameters from the request.",
     instruction=""" You are a creative storyteller for primary school children.
 The teacher's request is: '{session.state.request}'.
@@ -88,7 +88,7 @@ Output only in JSON. The JSON must strictly adhere to the following format:
     "extracted_language": "The identified language (e.g., 'English', 'Hindi')"
 }}
     """,
-    output_schema=StoryDraftOutput,
+    # output_schema=StoryDraftOutput,
     # The output of this agent will be stored as JSON in 'story_details' in the shared state.
     output_key="story_details",
     include_contents="default",
@@ -99,7 +99,7 @@ Output only in JSON. The JSON must strictly adhere to the following format:
 # This agent now pulls its inputs from the structured output of the previous agent.
 story_refinement_localizer = LlmAgent(
     name="StoryRefinementLocalizer",
-    model="gemini-1.5-flash", # Use a more capable model for nuanced refinement
+    model="gemini-2.0-flash", # Use a more capable model for nuanced refinement
     description="Refines the initial story draft for cultural relevance, rural-India friendliness, and length.",
     instruction="""
     You are an expert editor for children's educational content in rural India.
@@ -133,7 +133,7 @@ class FollowUpQuestionsOutput(BaseModel):
 
 follow_up_question_agent = LlmAgent(
     name="FollowUpQuestionAgent",
-    model="gemini-1.5-flash", # Use Pro for better question generation, especially for reasoning
+    model="gemini-2.0-flash", # Use Pro for better question generation, especially for reasoning
     description="Generates follow-up questions based on a story to test comprehension and reasoning.",
     instruction="""
     You are an educational assistant specialized in creating engaging questions for primary school children.
@@ -163,7 +163,7 @@ follow_up_question_agent = LlmAgent(
 # --- NEW Sub-Agent 4: Story and Questions Formatter Agent ---
 story_and_questions_formatter = LlmAgent(
     name="StoryAndQuestionsFormatter",
-    model="gemini-1.5-flash", # Flash is fine for formatting text
+    model="gemini-2.0-flash", # Flash is fine for formatting text
     description="Formats the generated story and follow-up questions into a single, user-friendly response.",
     instruction="""
     You are a friendly teaching assistant. Your task is to combine the provided story and follow-up questions into a single, clear message for the teacher.

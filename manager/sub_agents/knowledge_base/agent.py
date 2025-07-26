@@ -12,7 +12,7 @@ class ParsedRequestOutput(BaseModel):
 # --- NEW Sub-Agent 1: Request Parser Agent ---
 request_parser_agent = LlmAgent(
     name="RequestParserAgent",
-    model="gemini-1.5-flash", # Flash for quick parsing
+    model="gemini-2.0-flash", # Flash for quick parsing
     description="Parses the user's request and extracts the core question and desired language.",
     instruction="""
     You are an intelligent assistant. The teacher's full request is: '{session.state.request}'.
@@ -30,7 +30,7 @@ request_parser_agent = LlmAgent(
 # --- NEW Sub-Agent 2: Search Query Generator Agent ---
 search_query_generator_agent = LlmAgent(
     name="SearchQueryGeneratorAgent",
-    model="gemini-1.5-flash", # Flash for quick query generation
+    model="gemini-2.0-flash", # Flash for quick query generation
     description="Generates a Google Search query based on the extracted question and language.",
     instruction="""
     You are an expert search query generator.
@@ -51,7 +51,7 @@ search_query_generator_agent = LlmAgent(
 # If found, it will trigger a callback.
 inappropriate_query_checker_agent = LlmAgent(
     name="InappropriateQueryCheckerAgent",
-    model="gemini-1.5-flash", # Flash for quick checking
+    model="gemini-2.0-flash", # Flash for quick checking
     description="Checks the generated search query for inappropriate content and triggers a callback if found.",
     instruction="""
     You are a safety filter for search queries.

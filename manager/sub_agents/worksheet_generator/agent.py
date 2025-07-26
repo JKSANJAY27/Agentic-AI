@@ -21,7 +21,7 @@ class ExtractConceptAgent(LlmAgent):
     """
     name: str = "concept_extractor"
     description: str = "Extracts the main science concept from textbook content."
-    model: str = "gemini-1.5-flash"
+    model: str = "gemini-2.0-flash"
     instruction: str = """
 You are a curriculum design expert. Analyze the provided text from a textbook.
 Identify and extract the single core scientific concept it explains.
@@ -36,7 +36,7 @@ class GenerateWorksheetsAgent(LlmAgent):
     """
     name: str = "worksheet_generator_llm"
     description: str = "Generates multiple grade-specific worksheets for a science concept."
-    model: str = "gemini-1.5-flash"
+    model: str = "gemini-2.0-flash"
     instruction: str = """
 You are a creative and experienced elementary and middle school teacher.
 Given a science concept, generate three distinct worksheets for Grades 3, 5, and 7.

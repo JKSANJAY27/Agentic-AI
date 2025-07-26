@@ -125,7 +125,7 @@ class ParsedRequestOutput(BaseModel):
 # This agent takes the 'request' from the manager_agent and parses it.
 rag_request_parser_agent = LlmAgent(
     name="RagRequestParserAgent",
-    model="gemini-1.5-flash",
+    model="gemini-2.0-flash",
     description="Parses the user's question and language from the raw request for RAG processing.",
     instruction="""
     You are an intelligent assistant. The teacher's full request is: '{session.state.request}'.
@@ -145,7 +145,7 @@ rag_request_parser_agent = LlmAgent(
 # This agent will orchestrate the actual tool call to retrieve context.
 context_retriever_agent = LlmAgent(
     name="ContextRetrieverAgent",
-    model="gemini-1.5-flash", # Use Flash for calling the tool and simple logic
+    model="gemini-2.0-flash", # Use Flash for calling the tool and simple logic
     description="Uses a specialized tool to retrieve relevant context for a question from the knowledge base.",
     instruction="""
     You are a context retrieval specialist.
