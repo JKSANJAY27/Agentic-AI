@@ -75,5 +75,23 @@ The Story Generation Pipeline leverages a sequential processing design, ensuring
 For further technical and implementation details, see the [Story Generation Pipeline documentation](https://deepwiki.com/JKSANJAY27/Agentic-AI/3.1-story-generation-pipeline).
 
 <img width="670" height="791" alt="image" src="https://github.com/user-attachments/assets/6e8e54c4-b3e0-4e44-829b-930c2c03055c" />
+### Knowledge Base Pipeline
+
+#### Purpose and Scope
+
+The Knowledge Base Pipeline is an educational content generation system that processes teacher questions, retrieves information via Google Search, and delivers simplified answers with culturally relevant analogies for rural Indian primary school children. This pipeline handles knowledge-based queries as a core part of the broader ShikshaMitrah system.
+
+- For information about the central routing system, see: [Core Architecture](https://deepwiki.com/JKSANJAY27/Agentic-AI/2-core-architecture)
+- For lesson planning features, see: [Lesson Planner Agent](https://deepwiki.com/JKSANJAY27/Agentic-AI/3.3-lesson-planner-agent)
+- For document-based retrieval and deeper content search, see: [RAG Retrieval System](https://deepwiki.com/JKSANJAY27/Agentic-AI/3.5-rag-retrieval-system)
+- 
+####Pipeline Architecture
+The Knowledge Base Pipeline is implemented as a SequentialAgent that orchestrates five specialized sub-agents in a linear workflow. Each agent performs a specific transformation on the teacher's request until a final culturally-adapted answer is produced.
+
+#### Data Flow and State Management
+
+The Knowledge Base Pipeline uses session state variables to manage context and pass information between agents. Each sub-agent in the pipeline reads input from previous agent outputs and writes its results to well-defined session state keys—ensuring reliable, stateful communication and seamless multi-turn interactions for complex knowledge queries.
+<img width="1642" height="165" alt="image" src="https://github.com/user-attachments/assets/89aae0e4-9690-422d-ac39-0c58a5354367" />
+
 
 
