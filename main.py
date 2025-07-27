@@ -43,8 +43,6 @@
 # # This should correctly import the `root_agent` instance you defined in manager/agent.py
 # from manager.agent import root_agent
 
-# TELEGRAM_TOKEN = "8359970440:AAFaZqpL9V6ZBDupzcIoHjBU_PK8uEWSmA0" # Ensure this token is correct and secure
-# TELEGRAM_API = f"https://api.telegram.org/bot{TELEGRAM_TOKEN}"
 
 # app = FastAPI()
 
@@ -222,8 +220,7 @@
 
 
 
-# TELEGRAM_TOKEN = "8359970440:AAFaZqpL9V6ZBDupzcIoHjBU_PK8uEWSmA0"
-# TELEGRAM_API = f"https://api.telegram.org/bot{TELEGRAM_TOKEN}"
+
 
 # app = FastAPI()
 
