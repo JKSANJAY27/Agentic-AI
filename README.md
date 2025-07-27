@@ -63,3 +63,17 @@ The system employs a consistent **AgentTool** wrapper pattern that provides a st
 | `worksheet_creator_tool`    | `WorksheetCreationSequence`  | Generate worksheets from images     |
 <img width="607" height="803" alt="image" src="https://github.com/user-attachments/assets/53367f6d-4214-4283-893c-3a96e478216c" />
 
+## Specialized Sub-Agents
+
+This section provides a technical overview of the specialized sub-agent system in **ShikshaMitrah**. Each sub-agent is responsible for a specific educational task, such as story generation, knowledge retrieval, lesson planning, or worksheet creation. These sub-agents are orchestrated by the root agent and implement domain-specific pipelines, ensuring modularity and clarity of function across the system.
+### Story Generation Pipeline
+
+This document covers the multi-stage story creation system that generates culturally relevant stories for primary school children, complete with comprehension questions. The pipeline transforms teacher requests into localized educational stories with targeted follow-up questions, specifically designed for rural Indian educational contexts.
+
+The Story Generation Pipeline leverages a sequential processing design, ensuring the creation of safe, age-appropriate, and contextually meaningful stories. It incorporates cultural references, local folklore, and Panchatantra-like motifs, making learning relatable and engaging for students.
+
+For further technical and implementation details, see the [Story Generation Pipeline documentation](https://deepwiki.com/JKSANJAY27/Agentic-AI/3.1-story-generation-pipeline).
+
+<img width="670" height="791" alt="image" src="https://github.com/user-attachments/assets/6e8e54c4-b3e0-4e44-829b-930c2c03055c" />
+
+
